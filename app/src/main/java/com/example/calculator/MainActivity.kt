@@ -76,6 +76,11 @@ class MainActivity : AppCompatActivity() {
             var str:String = binding.input.text.substring(0,lastIndex)
             binding.input.text = str
         }
+
+        binding.buttonSwap.setOnClickListener {
+            swapNumbers()
+        }
+
     }
     private fun addToInputText(buttonValue:String): String{
         return "${binding.input.text}$buttonValue"
@@ -105,5 +110,29 @@ class MainActivity : AppCompatActivity() {
             binding.output.text = "Error"
             binding.output.setTextColor(ContextCompat.getColor(this, R.color.red))
         }
+    }
+    private fun swapNumbers() {
+        val inputText = binding.input.text.toString()
+
+        // Tìm vị trí của phép toán trong chuỗi
+        val operatorIndex = inputText.indexOfAny(charArrayOf('+', '-', '×', '÷'))
+
+        // Nếu không tìm thấy phép toán hoặc chỉ có một số
+        if (operatorIndex == -1 || operatorIndex == 0 || operatorIndex == inputText.length - 1) {
+            return // Không thực hiện đảo chỗ
+        }
+
+        // Tách chuỗi thành hai phần: trước và sau phép toán
+        val firstPart = inputText.substring(0, operatorIndex).trim()
+        val secondPart = inputText.substring(operatorIndex + 1).trim()
+
+        // Lấy phép toán
+        val operator = inputText[operatorIndex]
+
+        // Đảo chỗ hai số
+        val swappedText = "$secondPart $operator $firstPart"
+
+        // Cập nhật lại trường nhập liệu
+        binding.input.text = swappedText
     }
 }
